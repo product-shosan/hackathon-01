@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 // 共通スタイル定数
 const COLORS = {
@@ -126,13 +126,15 @@ export default function Toilet() {
       // の状態を定期的に取得するための関数
       const fechtIsInToilet = async () => {
           try {
-              const response = await fetch('hogehoge.com/api/isInToilet');
+              const response = await fetch('http://192.168.13.26:8000/status');
               const data = await response.json();
               // setIsInToilet(data.isInToilet);
-              setIsAvailable2F(data.isInToilet);
+              setIsAvailable2F(!data.is_occupied);
+              const result: boolean  = data.is_occupied;
+            setisopen(result);
           } catch (error) {
               console.error('Error fetching data:', error);
-              setTimeout(() => {console.log("Failed to fetch data after 5 seconds");}, 5000);
+              setTimeout(() => {console.log("Failed to fetch data after 5 seconds");}, 500);
           };
       };
       
@@ -144,6 +146,47 @@ export default function Toilet() {
   
           return () => clearInterval(intervalId); // コンポーネントがアンマウントされたときにインターバルをクリアする
       }, []);
+
+        const [isopen, setisopen] = useState(false);
+        const [status, setstatus] = useState("予約していません");
+        const audioRef = useRef<HTMLAudioElement>(null);
+      
+        // 五秒に一回関数を呼び出す
+          // const result: boolean  = callAPI ();
+          // setisopen(result)
+        useEffect(() => {
+          const interval = setInterval(() => {
+            const result: boolean  = fechtIsInToilet ();
+            setisopen(result);
+          }, 5000);
+          return () => clearInterval(interval);
+        }, []);
+      
+        useEffect(() => {
+          if (status === "予約中" && isopen === true) {
+            audioRef.current?.play();
+          }
+        }, [status, isopen]);
+      
+        const handlereserve = () => {
+      
+          if (status === "予約中"){
+              // 予約をキャンセルする
+              setstatus("予約していません");  
+          }
+      
+          else if (isopen === false){
+              // トイレ使用中のとき、予約する
+              setstatus("予約中");  
+          }
+        }
+      
+        const notification = () => {
+          // 予約中のとき、トイレに空きが出たら通知する
+          if (status === "予約中" && isopen === true){
+              return <div>予約中のトイレに空きが出ました</div>;
+          }
+        }
   return (
     <div
       className="min-h-screen relative"
