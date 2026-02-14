@@ -130,7 +130,7 @@ export default function Toilet() {
               const data = await response.json();
               // setIsInToilet(data.isInToilet);
               setIsAvailable2F(!data.is_occupied);
-              const result: boolean  = data.is_occupied;
+              const result = data.is_occupied;
             setisopen(result);
           } catch (error) {
               console.error('Error fetching data:', error);
@@ -151,16 +151,7 @@ export default function Toilet() {
         const [status, setstatus] = useState("予約していません");
         const audioRef = useRef<HTMLAudioElement>(null);
       
-        // 五秒に一回関数を呼び出す
-          // const result: boolean  = callAPI ();
-          // setisopen(result)
-        useEffect(() => {
-          const interval = setInterval(() => {
-            const result: boolean  = fechtIsInToilet ();
-            setisopen(result);
-          }, 5000);
-          return () => clearInterval(interval);
-        }, []);
+
       
         useEffect(() => {
           if (status === "予約中" && isopen === true) {
