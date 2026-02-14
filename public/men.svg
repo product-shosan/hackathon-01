@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <!-- Head -->
+  <circle cx="12" cy="5" r="2.5" fill="#FFFFFF"></circle>
+  
+  <!-- Body -->
+  <path d="M9 22V14H8V10C8 8.9 8.9 8 10 8H14C15.1 8 16 8.9 16 10V14H15V22H13V16H11V22H9Z" fill="#FFFFFF"></path>
+</svg>
