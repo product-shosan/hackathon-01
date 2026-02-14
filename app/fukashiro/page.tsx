@@ -8,8 +8,8 @@ export default function AxiosGet() {
     // の状態を定期的に取得するための関数
     const fechtIsInToilet = async () => {
         try {
-            const responset = await fetch('hogehoge.com/api/isInToilet');
-            const data = await responset.json();
+            const response = await fetch('hogehoge.com/api/isInToilet');
+            const data = await response.json();
             // setIsInToilet(data.isInToilet);
             setIsInToilet(data.isInToilet);
         } catch (error) {
@@ -26,11 +26,6 @@ export default function AxiosGet() {
 
         return () => clearInterval(intervalId); // コンポーネントがアンマウントされたときにインターバルをクリアする
     }, []);
-    
-    const intervalId = setInterval(() => {
-        fechtIsInToilet();
-        return () => clearInterval(intervalId);
-    }, 5000) // 5秒ごとにAPIを呼び出す
 
     return (
         <>
