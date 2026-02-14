@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // 共通スタイル定数
 const COLORS = {
@@ -68,14 +68,12 @@ function ToiletCard({ floor, isAvailable, onToggle }: ToiletCardProps) {
         <div className="space-y-5">
           <StatusButton
             isActive={isAvailable}
-            onClick={() => onToggle(true)}
             theme={COLORS.available}
             icon="/ok.svg"
             text="人なし"
           />
           <StatusButton
             isActive={!isAvailable}
-            onClick={() => onToggle(false)}
             theme={COLORS.occupied}
             icon="/no.svg"
             text="人あり"
@@ -102,16 +100,14 @@ function ToiletCard({ floor, isAvailable, onToggle }: ToiletCardProps) {
 // StatusButtonコンポーネント
 interface StatusButtonProps {
   isActive: boolean;
-  onClick: () => void;
   theme: typeof COLORS.available;
   icon: string;
   text: string;
 }
 
-function StatusButton({ isActive, onClick, theme, icon, text }: StatusButtonProps) {
+function StatusButton({ isActive, theme, icon, text }: StatusButtonProps) {
   return (
     <button
-      onClick={onClick}
       className={`w-full ${theme.gradient} ${theme.hoverGradient} text-white font-light text-lg rounded-2xl transition-all duration-500 flex items-center justify-center gap-4 tracking-wide cursor-pointer ${
         isActive ? 'is-active' : 'opacity-20'
       }`}
@@ -127,6 +123,27 @@ export default function Toilet() {
   const [isAvailable2F, setIsAvailable2F] = useState(true);
   const [isAvailable3F, setIsAvailable3F] = useState(false);
 
+      // の状態を定期的に取得するための関数
+      const fechtIsInToilet = async () => {
+          try {
+              const response = await fetch('hogehoge.com/api/isInToilet');
+              const data = await response.json();
+              // setIsInToilet(data.isInToilet);
+              setIsAvailable2F(data.isInToilet);
+          } catch (error) {
+              console.error('Error fetching data:', error);
+              setTimeout(() => {console.log("Failed to fetch data after 5 seconds");}, 5000);
+          };
+      };
+      
+      useEffect(() => {
+          fechtIsInToilet(); // コンポーネントがマウントされたときに一度APIを呼び出す
+          const intervalId = setInterval(() => {
+              fechtIsInToilet();
+          }, 5000); // 5秒ごとにAPIを呼び出す
+  
+          return () => clearInterval(intervalId); // コンポーネントがアンマウントされたときにインターバルをクリアする
+      }, []);
   return (
     <div
       className="min-h-screen relative"
