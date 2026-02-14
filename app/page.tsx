@@ -1,3 +1,4 @@
+
 import EventGrid from "@/component/event/EventGrid";
 import pastEvents from "@/model/pastEvents";
 
