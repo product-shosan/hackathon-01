@@ -112,9 +112,10 @@ function StatusButton({ isActive, onClick, theme, icon, text }: StatusButtonProp
   return (
     <button
       onClick={onClick}
-      className={`w-full h-16 ${theme.gradient} ${theme.hoverGradient} text-white font-light text-lg rounded-2xl transition-all duration-500 flex items-center justify-center gap-4 tracking-wide cursor-pointer ${
+      className={`w-full ${theme.gradient} ${theme.hoverGradient} text-white font-light text-lg rounded-2xl transition-all duration-500 flex items-center justify-center gap-4 tracking-wide cursor-pointer ${
         isActive ? 'is-active' : 'opacity-20'
       }`}
+      style={{ height: 'clamp(3.5rem, 6vw, 4rem)' }}
     >
       <img src={icon} alt="" className="w-6 h-6" />
       <span style={STYLES.buttonText}>{text}</span>
@@ -137,8 +138,8 @@ export default function Toilet() {
       }}
     >
       <div className="absolute inset-0 bg-black/50"></div>
-      <div className="relative flex min-h-screen items-center justify-center px-6 max-sm:pt-[70px]">
-        <div className="flex flex-col items-center gap-6 w-full">
+      <div className="relative flex min-h-screen items-center justify-center px-6 py-[70px] sm:py-0">
+        <div className="flex flex-col items-center w-full" style={{ gap: 'calc(0.5rem * 7)' }}>
           {/* Main Title */}
           <div className="text-center">
             <h2
@@ -164,7 +165,7 @@ export default function Toilet() {
           `}</style>
 
           {/* Toilet Cards Container */}
-          <div className="flex flex-col items-center sm:flex-row w-[90vw] lg:w-[1024px] gap-6 justify-center">
+          <div className="flex flex-col items-center sm:flex-row w-[90vw] lg:w-[1024px] justify-center" style={{ gap: 'calc(0.5rem * 7)' }}>
             <ToiletCard
               floor="2階トイレ"
               isAvailable={isAvailable2F}
