@@ -1,38 +1,45 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 dark:from-slate-900 dark:to-gray-900">
+      <div className="flex min-h-screen items-center justify-center px-6">
+        <div className="w-full max-w-md">
+          <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
 
-        <div className="flex flex-col items-center gap-6 text-center">
-          <div className="text-6xl">🚹</div>
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            トイレ状況共有
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            SHOSANが提供する清潔サービス
-          </p>
+            {/* Header */}
+            <div className="text-center mb-8">
+              <div className="bg-blue-100 dark:bg-blue-900/30 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-4xl">🚹</span>
+              </div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                トイレ状況共有
+              </h1>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                SHOSANが提供する清潔サービス
+              </p>
+            </div>
+
+            {/* Status Buttons */}
+            <div className="space-y-4">
+              <button className="w-full h-14 bg-emerald-500 hover:bg-emerald-600 text-white font-medium rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-3">
+                <span className="text-xl">✅</span>
+                <span>人なし</span>
+              </button>
+
+              <button className="w-full h-14 bg-red-500 hover:bg-red-600 text-white font-medium rounded-2xl transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center justify-center gap-3">
+                <span className="text-xl">🚫</span>
+                <span>人あり</span>
+              </button>
+            </div>
+
+            {/* Footer */}
+            <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+              <p className="text-xs text-center text-gray-500 dark:text-gray-400">
+                リアルタイム状況更新システム
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row" style={{ margin: '0 auto' }}>
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-green-500 px-5 text-white transition-colors hover:bg-green-600 md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            人なし
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full bg-red-500 px-5 text-white transition-colors hover:bg-red-600 md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            人あり
-          </a>
-        </div>
-      </main>
+      </div>
     </div>
   );
 }
