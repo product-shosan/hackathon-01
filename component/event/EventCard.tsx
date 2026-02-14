@@ -52,7 +52,7 @@ const EventCard = ({ event }: Props) => {
           <Link href={`/events/${event.id}`} className="flex-1 rounded-xl border px-3 py-2 text-center text-sm font-bold">
             詳細を見る
           </Link>
-          <Link href={`/app/${event.id}`} className="flex-1 rounded-xl bg-purple-600 px-3 py-2 text-center text-sm font-bold text-white">
+          <Link href={`/toilet`} className="flex-1 rounded-xl bg-purple-600 px-3 py-2 text-center text-sm font-bold text-white">
             アプリに移る
           </Link>
         </div>
