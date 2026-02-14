@@ -1,0 +1,60 @@
+.counter {
+  max-width: 360px;
+  margin: 24px auto;
+  padding: 20px;
+  border-radius: 12px;
+  background: #f9f9f9;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  font-family: sans-serif;
+}
+
+.counter p {
+  margin: 12px 0;
+  font-size: 14px;
+}
+
+/* トイレ状況 */
+.status-open {
+  color: #2e7d32;
+  font-weight: bold;
+}
+
+.status-closed {
+  color: #c62828;
+  font-weight: bold;
+}
+
+/* 予約状態 */
+.reserve {
+  color: #ef6c00;
+  font-weight: bold;
+}
+
+/* ボタン */
+.counter button {
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #1976d2;
+  color: #fff;
+  transition: background 0.2s ease;
+}
+
+.counter button:hover {
+  background: #1565c0;
+}
+
+/* 通知 */
+.notification {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fff3e0;
+  color: #e65100;
+  font-size: 13px;
+  border: 1px solid #ffe0b2;
+}
