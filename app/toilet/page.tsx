@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 
-// 공통 스타일 상수
+// 共通スタイル定数
 const COLORS = {
   available: {
     gradient: 'bg-gradient-to-br from-cyan-400 to-blue-600',
@@ -35,7 +35,7 @@ const STYLES = {
   }
 };
 
-// ToiletCard 컴포넌트
+// ToiletCardコンポーネント
 interface ToiletCardProps {
   floor: string;
   isAvailable: boolean;
@@ -99,7 +99,7 @@ function ToiletCard({ floor, isAvailable, onToggle }: ToiletCardProps) {
   );
 }
 
-// StatusButton 컴포넌트
+// StatusButtonコンポーネント
 interface StatusButtonProps {
   isActive: boolean;
   onClick: () => void;
