@@ -126,7 +126,7 @@ export default function Toilet() {
       // の状態を定期的に取得するための関数
       const fechtIsInToilet = async () => {
           try {
-              const response = await fetch('http://192.168.13.26:8000/status');
+              const response = await fetch('/toilet/api');
               const data = await response.json();
               // setIsInToilet(data.isInToilet);
               setIsAvailable2F(!data.is_occupied);
