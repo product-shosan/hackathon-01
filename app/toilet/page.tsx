@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // 共通スタイル定数
 const COLORS = {
@@ -121,7 +121,7 @@ function StatusButton({ isActive, theme, icon, text }: StatusButtonProps) {
 
 export default function Toilet() {
   const [isAvailable2F, setIsAvailable2F] = useState(true);
-  const [isAvailable3F, setIsAvailable3F] = useState(false);
+  const [isAvailable3F, setIsAvailable3F] = useState(true);
 
       // の状態を定期的に取得するための関数
       const fechtIsInToilet = async () => {
@@ -164,9 +164,7 @@ export default function Toilet() {
           if (status === "予約中"){
               // 予約をキャンセルする
               setstatus("予約していません");  
-          }
-      
-          else if (isopen === false){
+          } else if (isopen === false){
               // トイレ使用中のとき、予約する
               setstatus("予約中");  
           }
@@ -178,6 +176,20 @@ export default function Toilet() {
               return <div>予約中のトイレに空きが出ました</div>;
           }
         }
+  const reserveButtonClasses = [
+    "w-[300px] max-w-[90vw] sm:w-[300px]",
+    "rounded-2xl px-6 py-4",
+    "text-base font-semibold tracking-wide",
+    "bg-gradient-to-b from-sky-400 to-sky-500 text-white",
+    "shadow-md shadow-sky-500/30",
+    "transition-all duration-200",
+    "hover:from-sky-500 hover:to-sky-600 hover:shadow-lg",
+    "active:from-sky-600 active:to-sky-600",
+    "focus:outline-none focus-visible:ring-4 focus-visible:ring-slate-400/40",
+    "disabled:from-slate-200 disabled:to-slate-200 disabled:text-slate-500",
+    "disabled:shadow-none disabled:cursor-not-allowed disabled:hover:translate-y-0",
+  ].join(" ");
+
   return (
     <div
       className="min-h-screen relative"
@@ -217,16 +229,36 @@ export default function Toilet() {
 
           {/* Toilet Cards Container */}
           <div className="flex flex-col items-center sm:flex-row w-[90vw] lg:w-[1024px] justify-center" style={{ gap: 'calc(0.5rem * 7)' }}>
-            <ToiletCard
-              floor="2階トイレ"
-              isAvailable={isAvailable2F}
-              onToggle={setIsAvailable2F}
-            />
-            <ToiletCard
-              floor="3階トイレ"
-              isAvailable={isAvailable3F}
-              onToggle={setIsAvailable3F}
-            />
+            <div className="flex flex-col items-center gap-4 w-1/2">
+              <ToiletCard
+                floor="2階トイレ"
+                isAvailable={isAvailable2F}
+                onToggle={setIsAvailable2F}
+              />
+              <button
+                type="button"
+                onClick={handlereserve}
+                disabled={!isopen || status === "予約中"}
+                aria-disabled={!isopen || status === "予約中"}
+                className={reserveButtonClasses}
+              >
+                {status === "予約中" ? "通知予約中" : "通知をONにする"}
+              </button>
+            </div>
+            <div className="flex flex-col items-center gap-4 w-1/2">
+              <ToiletCard
+                floor="3階トイレ"
+                isAvailable={isAvailable3F}
+                onToggle={setIsAvailable3F}
+              />
+              <button
+                type="button"
+                disabled
+                className={reserveButtonClasses}
+              >
+                通知をONにする
+              </button>
+            </div>
           </div>
         </div>
       </div>
