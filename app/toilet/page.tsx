@@ -174,9 +174,9 @@ export default function Toilet() {
       const audio = new Audio("/sounds/notify.mp3");
       audioRef.current = audio;
       audio.preload = "auto";
-      audio.muted = true;
-      await audio.play();
-      audio.pause();
+      // audio.muted = true;
+      // await audio.play();
+      // audio.pause();
       audio.currentTime = 0;
       audio.muted = false;
     }
