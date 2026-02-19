@@ -122,60 +122,73 @@ function StatusButton({ isActive, theme, icon, text }: StatusButtonProps) {
 export default function Toilet() {
   const [isAvailable2F, setIsAvailable2F] = useState(true);
   const [isAvailable3F, setIsAvailable3F] = useState(true);
+  // const [isopen, setisopen] = useState(false);
+  const [status, setstatus] = useState("予約していません");
+  const audioRef = useRef<HTMLAudioElement>(null);
 
-      // の状態を定期的に取得するための関数
-      const fechtIsInToilet = async () => {
-          try {
-              const response = await fetch('http://192.168.13.26:8000/status');
-              const data = await response.json();
-              // setIsInToilet(data.isInToilet);
-              setIsAvailable2F(!data.is_occupied);
-              const result = data.is_occupied;
-            setisopen(result);
-          } catch (error) {
-              console.error('Error fetching data:', error);
-              setTimeout(() => {console.log("Failed to fetch data after 5 seconds");}, 500);
-          };
-      };
+  // の状態を定期的に取得するための関数
+  const fechtIsInToilet = async () => {
+    try {
+      // const response = await fetch('http://192.168.13.26:8000/status');
+      const response = await fetch('/api/dummy/status');
+      const data = await response.json();
+      // setIsInToilet(data.isInToilet);
+      setIsAvailable2F(!data.is_occupied);
+      const result = data.is_occupied;
+      // setisopen(result);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setTimeout(() => {console.log("Failed to fetch data after 5 seconds");}, 500);
+    };
+  };
       
-      useEffect(() => {
-          fechtIsInToilet(); // コンポーネントがマウントされたときに一度APIを呼び出す
-          const intervalId = setInterval(() => {
-              fechtIsInToilet();
-          }, 5000); // 5秒ごとにAPIを呼び出す
-  
-          return () => clearInterval(intervalId); // コンポーネントがアンマウントされたときにインターバルをクリアする
-      }, []);
-
-        const [isopen, setisopen] = useState(false);
-        const [status, setstatus] = useState("予約していません");
-        const audioRef = useRef<HTMLAudioElement>(null);
-      
+  useEffect(() => {
+    (() => fechtIsInToilet())(); // コンポーネントがマウントされたときに一度APIを呼び出す
+    const intervalId = setInterval(() => {
+      fechtIsInToilet();
+    }, 5000); // 5秒ごとにAPIを呼び出す
+    return () => clearInterval(intervalId); // コンポーネントがアンマウントされたときにインターバルをクリアする
+  }, []);
 
       
-        useEffect(() => {
-          if (status === "予約中" && isopen === true) {
-            audioRef.current?.play();
-          }
-        }, [status, isopen]);
+  useEffect(() => {
+    if (status === "予約中" && isAvailable2F) {
+      if (!audioRef.current) {
+        return;
+      }
+      audioRef.current.currentTime = 0;
+      audioRef.current?.play();
+      (() => setstatus("予約していません"))();
+    }
+  }, [isAvailable2F]);
       
-        const handlereserve = () => {
+  const handlereserve = async () => {
+    if (status === "予約中"){
+      // 予約をキャンセルする
+      setstatus("予約していません");
+    } else if (!isAvailable2F){
+      // トイレ使用中のとき、予約する
+      setstatus("予約中");
+    }
+    if (!audioRef.current) {
+      const audio = new Audio("/sounds/notify.mp3");
+      audioRef.current = audio;
+      audio.preload = "auto";
+      audio.muted = true;
+      await audio.play();
+      audio.pause();
+      audio.currentTime = 0;
+      audio.muted = false;
+    }
+  }
       
-          if (status === "予約中"){
-              // 予約をキャンセルする
-              setstatus("予約していません");  
-          } else if (isopen === false){
-              // トイレ使用中のとき、予約する
-              setstatus("予約中");  
-          }
-        }
-      
-        const notification = () => {
-          // 予約中のとき、トイレに空きが出たら通知する
-          if (status === "予約中" && isopen === true){
-              return <div>予約中のトイレに空きが出ました</div>;
-          }
-        }
+  // const notification = () => {
+  //   // 予約中のとき、トイレに空きが出たら通知する
+  //   if (status === "予約中" && isopen){
+  //     return <div>予約中のトイレに空きが出ました</div>;
+  //   }
+  // }
+
   const reserveButtonClasses = [
     "w-[300px] max-w-[90vw] sm:w-[300px]",
     "rounded-2xl px-6 py-4",
@@ -238,8 +251,8 @@ export default function Toilet() {
               <button
                 type="button"
                 onClick={handlereserve}
-                disabled={!isopen || status === "予約中"}
-                aria-disabled={!isopen || status === "予約中"}
+                disabled={isAvailable2F || status === "予約中"}
+                aria-disabled={isAvailable2F || status === "予約中"}
                 className={reserveButtonClasses}
               >
                 {status === "予約中" ? "通知予約中" : "通知をONにする"}
